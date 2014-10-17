@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<Settings>
+
+  <server>
+    <ipaddress>127.0.0.1</ipaddress>
+    <portnumber>9000</portnumber>
+     
+  </server>
+  
+  
+  <channels>
+    
+  </channels>
+  
+  <routing>
+    <rules></rules>
+  </routing>
+  
+</Settings>
