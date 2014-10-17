@@ -57,17 +57,5 @@ namespace ChatServer
         {
             throw new NotImplementedException();
         }
-
-        EventHandler<IncomingConnectionEventArgs> IConnectionListener.IncomingConnecctionHandler
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-            set
-            {
-                throw new NotImplementedException();
-            }
-        }
     }
 }

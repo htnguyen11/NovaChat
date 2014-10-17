@@ -8,7 +8,7 @@ namespace ChatServer
 {
     public interface IConnectionListener
     {
-        EventHandler<IncomingConnectionEventArgs> IncomingConnecctionHandler { get; set; }
+        EventHandler<IncomingConnectionEventArgs> IncomingConnectionHandler { get; set; }
 
 
         void Start();

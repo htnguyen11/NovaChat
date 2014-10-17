@@ -1,51 +1,90 @@
 ﻿using System;
 using System.Linq;
-
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using System.Threading;
 using CommonLib.Message;
 
 namespace Test
 {
-    public class TestMessage : IMessage
+    public class TestMessage
     {
-        byte[] IMessage.Body
+        private readonly Queue<IMessage> incomingMessages = null;
+        private bool isReady;
+
+        public Object sync_message = new Object();
+
+        public Object message_awailable = new Object();
+
+
+        public EventHandler<MessageReceivedEventArgs> HandleProcessMessage { get; set; }
+
+        public TestMessage ( )
         {
-            get
+            incomingMessages = new Queue<IMessage>();
+        }
+
+        /// <summary>
+        /// Rasied event when message is received from communication channel via communicator.  
+        /// Add message to queue to be ready for processing.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="arg"></param>
+        public void MessageReceived(object sender, MessageReceivedEventArgs arg)
+        {
+            lock (sync_message)
             {
-                throw new NotImplementedException();
-            }
-            set
-            {
-                throw new NotImplementedException();
+                incomingMessages.Enqueue(arg.Message);
+                Monitor.PulseAll(sync_message);
+               
             }
         }
 
-        string IMessage.CorrelationID
+
+        public void Start()
         {
-            get
+           
+            isReady = true;
+            Task.Run(() => ProcessMessage());
+        }
+
+        public void ProcessMessage()
+        {
+            while (isReady)
             {
-                throw new NotImplementedException();
-            }
-            set
-            {
-                throw new NotImplementedException();
+                lock (sync_message)
+                {
+                    IMessage message = null;
+
+                    if ( incomingMessages.Count > 0 )
+                    {
+                        message = incomingMessages.Dequeue();
+                        OnProcessMessage(message);
+                    }
+                    else
+                    {
+                        Console.WriteLine("message queue empty waiting for messae");
+                        Monitor.Wait(sync_message);
+                        Console.WriteLine("message received waking up to process message");
+
+                    }
+                }
             }
         }
 
-        string IMessage.MessageID
+        private void OnProcessMessage(IMessage message)
         {
-            get { throw new NotImplementedException(); }
+            var handler = this.HandleProcessMessage;
+            if ( handler!= null)
+            {
+                HandleProcessMessage(this, new MessageReceivedEventArgs(message));
+            }
         }
 
-        MessageType IMessage.Type
+        public void Stop()
         {
-            get
-            {
-                throw new NotImplementedException();
-            }
-            set
-            {
-                throw new NotImplementedException();
-            }
+
         }
+
     }
 }

@@ -28,6 +28,8 @@ namespace ChatServer
 
         private IConnectionListener connectionListener = null;
 
+        private CommunicationMananger communicationManager = null;
+
         public Server()
         {
             Initialize();
@@ -43,7 +45,10 @@ namespace ChatServer
             //to be implemented
 
             this.connectionListener = new ConnectionListener(ipAddress, port);
-            connectionListener.IncomingConnecctionHandler += HandleIncomingConnection;
+            connectionListener.IncomingConnectionHandler += HandleIncomingConnection;
+
+            communicationManager = new CommunicationMananger();
+            
 
 
             isReady = true;
@@ -68,7 +73,8 @@ namespace ChatServer
         private void HandleIncomingConnection(object sender, IncomingConnectionEventArgs arg)
         {
             ICommunicator communicator = new Communicator(arg.Channel);
-            communicator.Start();
+
+            communicationManager.CommunicatorConnected(communicator);
         }
     }
 }

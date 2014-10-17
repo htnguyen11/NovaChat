@@ -14,8 +14,6 @@ namespace CommonLib.Message
 
         public Object sync_message = new Object();
 
-        public Object message_awailable = new Object();
-
 
         public EventHandler<MessageReceivedEventArgs> HandleProcessMessage { get; set; }
 
@@ -24,13 +22,19 @@ namespace CommonLib.Message
             incomingMessages = new Queue<IMessage>();
         }
 
-
+        /// <summary>
+        /// Rasied event when message is received from communication channel via communicator.  
+        /// Add message to queue to be ready for processing.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="arg"></param>
         public void MessageReceived(object sender, MessageReceivedEventArgs arg)
         {
             lock (sync_message)
             {
                 incomingMessages.Enqueue(arg.Message);
-                Monitor.PulseAll(message_awailable);
+                Monitor.PulseAll(sync_message);
+               
             }
         }
 
@@ -57,7 +61,9 @@ namespace CommonLib.Message
                     }
                     else
                     {
-                        Monitor.Wait(message_awailable);
+
+                        Monitor.Wait(sync_message);
+
                     }
                 }
             }
@@ -74,7 +80,11 @@ namespace CommonLib.Message
 
         public void Stop()
         {
-
+            lock (sync_message)
+            {
+                isReady = false;
+                Monitor.PulseAll(sync_message);
+            }
         }
 
     }
