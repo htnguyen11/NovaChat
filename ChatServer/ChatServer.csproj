@@ -52,6 +52,7 @@
     <Compile Include="IncomingConnectionEventArgs.cs" />
     <Compile Include="IServer.cs" />
     <Compile Include="ISubscribable.cs" />
+    <Compile Include="MessageChannel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PubSubChannel.cs" />
     <Compile Include="Router.cs" />
