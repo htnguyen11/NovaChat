@@ -33,7 +33,11 @@ namespace CommonLib.Message
             lock (sync_message)
             {
                 incomingMessages.Enqueue(arg.Message);
-                Monitor.PulseAll(sync_message);
+
+                if (incomingMessages.Count > 0)
+                {
+                    Monitor.PulseAll(sync_message);
+                }
                
             }
         }
@@ -46,7 +50,7 @@ namespace CommonLib.Message
             Task.Run(() => ProcessMessage());
         }
 
-        public void ProcessMessage()
+        private void ProcessMessage()
         {
             while (isReady)
             {
@@ -74,6 +78,8 @@ namespace CommonLib.Message
             var handler = this.HandleProcessMessage;
             if ( handler!= null)
             {
+                MessageType type = message.Type;
+                
                 HandleProcessMessage(this, new MessageReceivedEventArgs(message));
             }
         }
