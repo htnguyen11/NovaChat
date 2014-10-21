@@ -5,6 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Net.Sockets;
 using System.Threading.Tasks;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace CommonLib.Message
 {
@@ -27,7 +29,47 @@ namespace CommonLib.Message
 
         public void Send (IMessage message)
         {
+            byte[] message_data = GetBytes<IMessage>(message);
+        }
 
+        private byte[] GetBytes<T>(T message)
+        {
+            byte[] serializedMessage = SerializeMessage<T>(message);
+            int len = serializedMessage.Length;
+
+            byte[] messageSize  = BitConverter.GetBytes(len);
+
+            byte[] message_data = new byte[len+4];
+            if ( messageSize.Length > 4)
+            {
+                throw new Exception("Invalid message size.");
+            }
+
+            Array.Copy(messageSize,message_data, messageSize.Length);
+            Array.Copy(serializedMessage,0,message_data,4,serializedMessage.Length);
+
+            return message_data;
+        }
+
+
+        private byte[] SerializeMessage<T> (T message)
+        {
+            using (MemoryStream mstream = new MemoryStream())
+            {
+                try
+                {
+                    BinaryFormatter binaryFormatter = new BinaryFormatter();
+                    binaryFormatter.Serialize(mstream, message);
+                    return mstream.ToArray();
+                }
+                catch ( SerializationException ex)
+                {
+                    ///write to logger
+                    ///to be implemtned
+                    string ex_message = ex.Message;
+                }
+                throw new Exception("Failed to serialize message.");
+            }
         }
 
 
