@@ -91,7 +91,14 @@ namespace CommonLib
         {
             if (client.Connected)
             {
-                messageStream.Send(message);
+                SendAsync(message).Wait() ;
+            }
+        }
+        private async Task SendAsync(IMessage message)
+        {
+            if(client.Connected)
+            {
+                await messageStream.Send(message);
             }
         }
     }
