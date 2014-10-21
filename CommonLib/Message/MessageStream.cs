@@ -27,9 +27,16 @@ namespace CommonLib.Message
         }
 
 
-        public void Send (IMessage message)
+        public async Task Send (IMessage message)
         {
             byte[] message_data = GetBytes<IMessage>(message);
+
+            await SendAsync(message_data);
+        }
+
+        private async Task SendAsync(byte[] message_data)
+        {
+            await nStream.WriteAsync(message_data, 0, message_data.Length);
         }
 
         private byte[] GetBytes<T>(T message)
