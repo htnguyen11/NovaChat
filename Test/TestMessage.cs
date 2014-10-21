@@ -7,7 +7,7 @@ using CommonLib.Message;
 
 namespace Test
 {
-    public class TestMessage
+    public class TestMessage : TestAbstract
     {
         private readonly Queue<IMessage> incomingMessages = null;
         private bool isReady;
@@ -84,6 +84,11 @@ namespace Test
         public void Stop()
         {
 
+        }
+
+        public override void Test()
+        {
+            Console.WriteLine("HEY");
         }
 
     }

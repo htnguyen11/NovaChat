@@ -29,9 +29,12 @@ namespace ChatServer
         }
 
 
-        public void Communicator_MessageReceived(object sender, MessageReceivedEventArgs arg)
+        private void Communicator_MessageReceived(object sender, MessageReceivedEventArgs arg)
         {
-            messageQueue.MessageReceived(sender,arg);
+            lock (messageQueue)
+            {
+                messageQueue.MessageReceived(sender, arg);
+            }
         }
 
         /// <summary>
@@ -41,10 +44,15 @@ namespace ChatServer
         /// <param name="arg"></param>
         private void ProcessMessage(object sender, MessageReceivedEventArgs arg)
         {
-
+            throw new NotImplementedException();
         }
 
 
+
+        /// <summary>
+        /// Add communicater to a waiting list for authorization.
+        /// </summary>
+        /// <param name="communicator"></param>
         public void CommunicatorConnected(ICommunicator communicator)
         {
             lock ( communicators)
