@@ -8,66 +8,34 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Net.Sockets;
+using CommonLib;
+using ChatServer;
 
 namespace Test
 {
     class Program
     {
-        private bool isRunning;
-        private Object sync_message = new Object();
-        private Queue<string> queue = new Queue<string>();
+
 
         static void Main(string[] args)
         {
-            Program pr = new Program();
-            Task.Run(() => pr.Test());
+            IConnectionListener listener = new ConnectionListener("127.0.0.1", 9000);
+            listener.IncomingConnectionHandler += Connection_Connected;
+            listener.Start();
 
-            pr.Test_two("Gone wild");
-            pr.Test_two("What the hell");
-
-            Thread.Sleep(1000);
-            pr.Test_two("What the hell");
-            pr.Test_two("What the hell");
-            pr.Test_two("What the hell");
-            pr.Test_two("What the hell");
-            pr.Test_two("What the hell");
-
+            
+            
             Console.ReadKey();
+
         }
 
-
-        public  void Test()
+        public static  void Connection_Connected(object ssender, IncomingConnectionEventArgs arg)
         {
-            while ( true )
-            {
-                lock (sync_message)
-                {
-
-                    //Thread.Sleep(10000);
-                    if (queue.Count > 0)
-                    {
-                        string text = queue.Dequeue();
-                        Monitor.PulseAll(sync_message);
-                        Thread.Sleep(5000);
-                        Console.WriteLine(text);
-                    }
-                    else
-                    {
-                        Monitor.Wait(sync_message);
-                    }
-                }
-            }
+            Console.WriteLine("connected");
         }
 
-        public void Test_two(string text)
-        {
-            lock(sync_message)
-            {
-                Console.WriteLine("enqueu text");
-                queue.Enqueue(text);
-                Monitor.PulseAll(sync_message);
-            }
-        }
+
 
     }
 }

@@ -35,6 +35,13 @@ namespace ChatServer
             Initialize();
         }
 
+        public Server(string ipAddress, int port)
+        {
+            this.ipAddress = ipAddress;
+            this.port = port;
+            Initialize();
+        }
+
 
         /// <summary>
         /// Initialize components to start server.
@@ -43,7 +50,7 @@ namespace ChatServer
         {
             //Read in server ipaddress and port to accept incoming connection.
             //to be implemented
-
+            
             this.connectionListener = new ConnectionListener(ipAddress, port);
             connectionListener.IncomingConnectionHandler += HandleIncomingConnection;
 

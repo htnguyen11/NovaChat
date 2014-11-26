@@ -43,10 +43,10 @@
     <Compile Include="Communicator.cs" />
     <Compile Include="ICommunicationChannel.cs" />
     <Compile Include="ICommunicator.cs" />
+    <Compile Include="ISubscriber.cs" />
     <Compile Include="Message\IMessage.cs" />
     <Compile Include="Message\Message.cs" />
     <Compile Include="Message\MessageEnum.cs" />
-    <Compile Include="Message\MessageHeader.cs" />
     <Compile Include="Message\MessageQueue.cs" />
     <Compile Include="Message\MessageReceivedEventArgs.cs" />
     <Compile Include="Message\MessageStream.cs" />

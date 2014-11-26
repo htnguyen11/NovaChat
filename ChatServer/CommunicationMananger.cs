@@ -10,7 +10,6 @@ namespace ChatServer
     public class CommunicationMananger
     {
 
-        private PubSubChannel pubsubChannel = null;
         private MessageQueue messageQueue = null;
 
 

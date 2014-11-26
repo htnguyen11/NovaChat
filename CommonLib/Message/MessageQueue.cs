@@ -28,11 +28,11 @@ namespace CommonLib.Message
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="arg"></param>
-        public void MessageReceived(object sender, MessageReceivedEventArgs arg)
+        public void QueueMessage(IMessage message)
         {
             lock (sync_message)
             {
-                incomingMessages.Enqueue(arg.Message);
+                incomingMessages.Enqueue(message);
 
                 if (incomingMessages.Count > 0)
                 {

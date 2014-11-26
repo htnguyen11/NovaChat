@@ -47,5 +47,13 @@ namespace CommonLib.Message
         /// Correlation ID to for reply message.
         /// </summary>
         string IMessage.CorrelationID { get; set; }
+
+
+
+        string IMessage.RoutingKey { get; set; }
+
+        string IMessage.Source { get; set; }
+
+        string IMessage.Destination { get; set; }
     }
 }

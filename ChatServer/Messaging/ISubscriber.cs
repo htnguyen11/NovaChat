@@ -4,14 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Test
+namespace ChatServer.Messaging
 {
-    public abstract class TestAbstract
+    public interface ISubscriber
     {
-
-        public virtual void Test()
-        {
-
-        }
     }
 }

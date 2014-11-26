@@ -15,19 +15,30 @@ namespace CommonLib
 
         private ICommunicationChannel communicationChannel = null;
 
+        private string id = String.Empty;
+
         public Communicator(ICommunicationChannel communicationChannel)
         {
             if (communicationChannel == null)
                 throw new ArgumentNullException("channel");
 
             this.communicationChannel = communicationChannel;
+
+            Guid guid = Guid.NewGuid();
+            id = guid.ToString();
         }
+
 
         /// <summary>
         /// This handler is used to raise event to handle received message from the communication channel.
         /// </summary>
         public EventHandler<MessageReceivedEventArgs> MessageReceivedHandler { get; set; }
 
+
+        void ISubscriber.Receive(IMessage message)
+        {
+            communicationChannel.Send(message);
+        }
 
         /// <summary>
         /// Send message to the communication channel.
@@ -64,6 +75,14 @@ namespace CommonLib
             if ( handler != null )
             {
                 handler(this, arg);
+            }
+        }
+
+        string ISubscriber.ID
+        {
+            get
+            {
+               return id;
             }
         }
     }

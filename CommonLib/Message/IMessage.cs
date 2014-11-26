@@ -41,5 +41,17 @@ namespace CommonLib.Message
         /// </summary>
         string CorrelationID { get; set; }
 
+
+
+        /// <summary>
+        /// Routing key used to route message message channel(s).
+        /// </summary>
+        string RoutingKey { get; set; }
+
+
+
+        string Source { get; set; }
+
+        string Destination { get; set; }
     }
 }

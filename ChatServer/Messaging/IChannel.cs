@@ -5,19 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using CommonLib.Message;
 
-namespace ChatServer
+namespace ChatServer.Messaging
 {
-    public class Router
+    public interface IChannel
     {
 
-        public Router()
-        {
-
-        }
-
-        public void Route(IMessage message)
-        {
-
-        }
+        void Publish(IMessage message);
     }
 }

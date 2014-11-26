@@ -7,7 +7,7 @@ using CommonLib.Message;
 
 namespace CommonLib
 {
-    public interface ICommunicator
+    public interface ICommunicator :ISubscriber
     {
         /// <summary>
         /// This handler is used to raise event to handle received message from the communication channel.
@@ -20,6 +20,7 @@ namespace CommonLib
         /// </summary>
         /// <param name="message"></param>
         void Send(IMessage message);
+
 
         /// <summary>
         /// Start communicator by start accepting incoming message.
