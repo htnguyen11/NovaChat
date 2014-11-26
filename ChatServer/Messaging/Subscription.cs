@@ -7,7 +7,7 @@ using System.Threading;
 
 namespace ChatServer.Messaging
 {
-    public class Subscription
+    public class Subscription : ISubscription
     {
         private IList<ISubscriber> subscribers = null;
 
@@ -33,7 +33,7 @@ namespace ChatServer.Messaging
             subscriptionLock.ExitWriteLock();
         }
 
-        public void RemoveSubscriber(ISubscriber subscriber)
+        public void UnSubscribe(ISubscriber subscriber)
         {
             subscriptionLock.EnterReadLock();
 
@@ -45,7 +45,7 @@ namespace ChatServer.Messaging
             subscriptionLock.ExitReadLock();
         }
 
-        public string Name { get;private set };
-        private string ID { get;private set};
+        public string Name { get;private set ;}
+        public string ID { get; private set; }
     }
 }

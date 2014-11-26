@@ -10,7 +10,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 namespace CommonLib.Message
 {
-    internal class MessageStream
+    public class MessageStream
     {
         /// <summary>
         /// object instance used to do network IO.
@@ -90,7 +90,36 @@ namespace CommonLib.Message
 
             byte[] messageData = await ReceiveMessage();
 
+            message = GetMessage<IMessage>(messageData);
+
             return message;
+        }
+
+        public static T GetMessage<T>(byte[] data)
+        {
+            T msgcontext = default(T);
+            try
+            {
+                using (MemoryStream mStream = new MemoryStream(data))
+                {
+
+                    mStream.Write(data, 0, data.Length);
+                    mStream.Seek(0, SeekOrigin.Begin);
+                    BinaryFormatter bformatter = new BinaryFormatter();
+                    mStream.Seek(0, SeekOrigin.Begin);
+                    msgcontext = (T)bformatter.Deserialize(mStream);
+
+
+                    return msgcontext;
+
+                }
+            }
+            catch (InvalidCastException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+            return msgcontext;
         }
 
         private async Task<byte[]> ReceiveMessage()

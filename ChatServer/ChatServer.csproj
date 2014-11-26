@@ -33,7 +33,8 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CommonLib">
+    <Reference Include="CommonLib, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\CommonLib\bin\Debug\CommonLib.dll</HintPath>
     </Reference>
     <Reference Include="System" />
@@ -45,10 +46,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CommunicationMananger.cs" />
+    <Compile Include="Connection.cs" />
     <Compile Include="ConnectionManager.cs" />
     <Compile Include="ConnectionListener.cs" />
     <Compile Include="ICommunicationController.cs" />
+    <Compile Include="IConnection.cs" />
     <Compile Include="IConnectionListener.cs" />
     <Compile Include="IncomingConnectionEventArgs.cs" />
     <Compile Include="IServer.cs" />

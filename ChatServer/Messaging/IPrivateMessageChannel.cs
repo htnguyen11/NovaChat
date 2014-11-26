@@ -6,12 +6,5 @@ using System.Threading.Tasks;
 
 namespace ChatServer.Messaging
 {
-    public interface IPrivateMessageChannel : IChannel
-    {
 
-        void Subscribe(ISubscription subscription)
-        {
-
-        }
-    }
 }

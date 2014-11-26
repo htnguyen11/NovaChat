@@ -15,6 +15,7 @@ namespace CommonLib
 
         private TcpClient client = null;
 
+        private bool isRunning = false;
 
         public CommunicationChannel ( TcpClient client )
         {
@@ -40,9 +41,12 @@ namespace CommonLib
         /// <returns></returns>
         public async Task AcceptMessage()
         {
-            IMessage message = await messageStream.ReceiveAsync();
+            while (isRunning)
+            {
+                IMessage message = await messageStream.ReceiveAsync();
 
-            OnMessageReceived(message);
+                OnMessageReceived(message);
+            }
            
         }
 
@@ -67,6 +71,7 @@ namespace CommonLib
                 throw new Exception("Attempted to open channel without TCP socket connection.");
             }
 
+            isRunning = true;
             Task.Run(() => AcceptMessage());
 
         }

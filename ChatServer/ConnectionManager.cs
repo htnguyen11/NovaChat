@@ -3,37 +3,56 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Threading;
+using ChatServer.Messaging;
 using CommonLib;
 using CommonLib.Message;
 
 namespace ChatServer
 {
-    public class ConnectionManager : ICommunicationController
+    public class ConnectionManager
     {
         //Dication to hold a collection of communicators(client connection) connected to this server.
-        private Dictionary<string, ICommunicator> communicators = null;
+        private Dictionary<string, IConnection> connections = null;
+
+        private ReaderWriterLockSlim connectionsLock = null;
+
+        private MessageBroker messageBroker = null;
 
         public ConnectionManager()
         {
-
+            Initialize();
         }
 
         private void Initialize()
         {
-            communicators = new Dictionary<string, ICommunicator>();
+            connections = new Dictionary<string, IConnection>();
+            connectionsLock = new ReaderWriterLockSlim();
+            messageBroker = new MessageBroker();
         }
 
 
-        private void IncomingConnectionConnected(object sender, IncomingConnectionEventArgs arg)
+        public void IncomingConnectionConnected(ICommunicator communicator)
         {
-            ICommunicator communicator = new Communicator(arg.Channel);
 
-            communicator.MessageReceivedHandler += MessageReceivedHandler;
+            IConnection connection = new Connection(communicator);
+
+            connection.MessageHandler += MessageReceivedHandler;
+
+            connectionsLock.EnterWriteLock();
+
+            connections.Add(connection.ID, connection);
+
+            connectionsLock.ExitWriteLock();
+
+            connection.Start();
+            
         }
 
         private void MessageReceivedHandler(object sender, MessageReceivedEventArgs arg)
         {
-            IMessage messge = arg.Message;
+            IMessage message = arg.Message;
+            messageBroker.ScheduleMessage(message);
         }
     }
 }

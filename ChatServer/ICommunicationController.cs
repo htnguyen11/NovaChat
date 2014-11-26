@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ChatServer
 {
-    public interface ICommunicationController
+    public interface IConnectionManager
     {
     }
 }

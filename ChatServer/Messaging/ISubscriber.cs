@@ -8,5 +8,7 @@ namespace ChatServer.Messaging
 {
     public interface ISubscriber
     {
+
+        void Subscribe(ISubscription subscription);
     }
 }

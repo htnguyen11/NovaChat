@@ -28,7 +28,7 @@ namespace ChatServer
 
         private IConnectionListener connectionListener = null;
 
-        private CommunicationMananger communicationManager = null;
+        private ConnectionManager connectionMananger = null;
 
         public Server()
         {
@@ -54,7 +54,7 @@ namespace ChatServer
             this.connectionListener = new ConnectionListener(ipAddress, port);
             connectionListener.IncomingConnectionHandler += HandleIncomingConnection;
 
-            communicationManager = new CommunicationMananger();
+            connectionMananger = new ConnectionManager();
             
 
 
@@ -81,7 +81,7 @@ namespace ChatServer
         {
             ICommunicator communicator = new Communicator(arg.Channel);
 
-            communicationManager.CommunicatorConnected(communicator);
+            this.connectionMananger.IncomingConnectionConnected(communicator);
         }
     }
 }
