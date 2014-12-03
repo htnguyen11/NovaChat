@@ -30,15 +30,13 @@ namespace CommonLib.Message
         /// <param name="arg"></param>
         public void QueueMessage(IMessage message)
         {
-            lock (sync_message)
+            lock ( sync_message)
             {
                 incomingMessages.Enqueue(message);
-
-                if (incomingMessages.Count > 0)
+                if ( incomingMessages.Count > 0 )
                 {
-                    Monitor.PulseAll(sync_message);
+                    Monitor.Pulse(sync_message);
                 }
-               
             }
         }
 
@@ -61,6 +59,9 @@ namespace CommonLib.Message
                     if ( incomingMessages.Count > 0 )
                     {
                         message = incomingMessages.Dequeue();
+
+                        Monitor.Pulse(sync_message);
+
                         OnProcessMessage(message);
                     }
                     else
