@@ -7,10 +7,9 @@ using CommonLib.Message;
 
 namespace ChatServer.Messaging
 {
-    public interface IChannel
+    public interface IRouter
     {
-        void Publish(IMessage message);
-        string Name { get; }
 
+        IChannel Route(string routingKey);
     }
 }

@@ -20,31 +20,35 @@ namespace Test
 
         private IList<IConnection> connections = new List<IConnection>();
 
-        private ICommunicationChannel channel = null;
+       
         static void Main(string[] args)
         {
-            /*System.Net.IPAddress address = System.Net.IPAddress.Parse("127.0.0.1");
-            TcpListener listener = new TcpListener(address, 9000);
-            listener.Start();
 
-            TcpClient client = listener.AcceptTcpClient();
-
-            MessageStream mstream = new MessageStream(client.GetStream());*/
-            
-            Program pr = new Program();
-
-            //pr.Receive(mstream);
-
-           IConnectionListener connectionListener = new ConnectionListener("127.0.0.1", 9000);
-            
-            connectionListener.IncomingConnectionHandler += pr.Connection_Connected;
-
-            connectionListener.Start();
-
-            Console.ReadKey();
-
+            Run(null, 0);
         }
 
+        public static void Run(MessageQueue mqueue, int timeout)
+        {
+            var contextwork = new Context();
+            Callback(state =>
+                {
+                    var context = (Context)state;
+                    
+
+                },
+                contextwork
+            );
+
+            IMessage message = new Message();
+            mqueue.QueueMessage(message);
+            
+        }
+
+
+        public static void Callback (WaitCallback callback , object state )
+        {
+            Console.ReadKey();
+        }
         public void Connection_Connected(object ssender, IncomingConnectionEventArgs arg)
         {
 
@@ -58,12 +62,18 @@ namespace Test
         }
 
 
-        public void MessageReceivedHandler(object sender, MessageReceivedEventArgs arg)
+        public static  void MessageReceivedHandler(object sender, MessageReceivedEventArgs arg)
         {
             IMessage message = arg.Message;
             Console.WriteLine(message.Source);
+            Thread.Sleep(3000);
         }
 
+
+    }
+
+    public class Context
+    {
 
     }
 }

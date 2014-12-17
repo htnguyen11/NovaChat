@@ -7,10 +7,8 @@ using CommonLib.Message;
 
 namespace ChatServer.Messaging
 {
-    public interface IChannel
+    public interface IMessageHandler
     {
-        void Publish(IMessage message);
-        string Name { get; }
-
+        void Handle(IMessage message);
     }
 }

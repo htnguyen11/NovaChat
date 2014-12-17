@@ -55,14 +55,18 @@
     <Compile Include="IncomingConnectionEventArgs.cs" />
     <Compile Include="IServer.cs" />
     <Compile Include="Messaging\GroupChannel.cs" />
+    <Compile Include="Messaging\GroupMessageHandler.cs" />
     <Compile Include="Messaging\IChannel.cs" />
+    <Compile Include="Messaging\IMessageHandler.cs" />
     <Compile Include="Messaging\IPrivateMessageChannel.cs" />
+    <Compile Include="Messaging\IRouter.cs" />
     <Compile Include="Messaging\ISubscriber.cs" />
     <Compile Include="Messaging\ISubscription.cs" />
     <Compile Include="Messaging\MessageBroker.cs" />
     <Compile Include="Messaging\MessageRouter.cs" />
     <Compile Include="Messaging\PrivateMessageChannel.cs" />
     <Compile Include="Messaging\Subscription.cs" />
+    <Compile Include="Messaging\SubscriptionMananger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Server.cs" />
   </ItemGroup>

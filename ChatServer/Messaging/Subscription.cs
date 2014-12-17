@@ -23,6 +23,7 @@ namespace ChatServer.Messaging
 
         public void Subscribe(ISubscriber subscriber)
         {
+            
             subscriptionLock.EnterWriteLock();
 
             if ( !subscribers.Contains(subscriber))

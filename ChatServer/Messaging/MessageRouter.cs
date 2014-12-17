@@ -7,7 +7,7 @@ using CommonLib.Message;
 
 namespace ChatServer.Messaging
 {
-    public class MessageRouter
+    public class MessageRouter : IRouter
     {
         private Dictionary<string, IChannel> channels = null;
 
@@ -16,16 +16,18 @@ namespace ChatServer.Messaging
             channels = new Dictionary<string, IChannel>();
         }
 
-        public void Route(IMessage message)
+        public IChannel Route(string routingKey)
         {
-            string routingKey = message.RoutingKey;
 
-
-            if (channels.ContainsKey(routingKey))
+            IChannel channel;
+            if ( !channels.TryGetValue(routingKey, out channel))
             {
-                IChannel channel = channels[routingKey];
-                
+                // log invalid channel or channel does not exists
+                throw new NotImplementedException("Implementation of channel to handle invalid channel not yet implemented.");
             }
+
+            return channel;
+          
         }
 
 

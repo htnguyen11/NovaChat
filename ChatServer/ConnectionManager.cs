@@ -52,6 +52,7 @@ namespace ChatServer
         private void MessageReceivedHandler(object sender, MessageReceivedEventArgs arg)
         {
             IMessage message = arg.Message;
+
             messageBroker.ScheduleMessage(message);
         }
     }
